@@ -22,3 +22,5 @@ export interface Movie {
     vote_average: number;
     vote_count: number;
 }
+
+export type MovieImageSize = 'original' | 'w-500' | 'w-200';

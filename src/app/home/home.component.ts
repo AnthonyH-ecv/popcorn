@@ -1,11 +1,14 @@
 import { Component } from '@angular/core';
+import { TrendMovieComponent } from './trend-movie/trend-movie.component';
 
 @Component({
-  selector: 'app-home',
-  standalone: true,
-  imports: [],
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+    selector: 'app-home',
+    standalone: true,
+    imports: [
+        TrendMovieComponent
+    ],
+    templateUrl: './home.component.html',
+    styleUrl: './home.component.scss'
 })
 export class HomeComponent {
 
