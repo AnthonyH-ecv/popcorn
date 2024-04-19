@@ -1,10 +1,16 @@
 .main {
-  height: 700px;
+  height: 80vh;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+
+  .overview-container {
+    width: 35%;
+
+    .overview {
+      max-height: 300px;
+    }
+  }
 }
 
-.overview {
-  height: 300px;
-}
+

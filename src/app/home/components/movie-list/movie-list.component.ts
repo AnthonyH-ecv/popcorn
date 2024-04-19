@@ -19,6 +19,7 @@ export class MovieListComponent implements OnInit {
     @Input() movieListType: MovieListType = 'GENRE';
     tmdbService = inject(TmdbService);
     moviesByGenre: Movie[] | undefined;
+    trendMovies: Movie[] | undefined;
 
     constructor() {
         effect(() => {
@@ -26,6 +27,11 @@ export class MovieListComponent implements OnInit {
                 const movieByGenreResponse = this.tmdbService.fetchMovieByGenre() ?? {} as MovieApiResponse;
                 if (movieByGenreResponse.genreId === this.genreId) {
                     this.moviesByGenre = movieByGenreResponse.results;
+                }
+            } else if (this.movieListType === 'TREND') {
+                const trendMoviesResponse = this.tmdbService.fetchTrendMovies();
+                if (trendMoviesResponse) {
+                    this.trendMovies = trendMoviesResponse.results;
                 }
             }
         });
