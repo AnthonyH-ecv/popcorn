@@ -23,6 +23,6 @@ export class MovieSelectorComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.tmdbService.fetchGenres();
+        this.tmdbService.getAllGenre();
     }
 }
