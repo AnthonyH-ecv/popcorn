@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { TrendMovieComponent } from './trend-movie/trend-movie.component';
+import { TrendMovieComponent } from './components/trend-movie/trend-movie.component';
 
 @Component({
     selector: 'app-home',

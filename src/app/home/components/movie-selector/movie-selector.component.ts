@@ -1,6 +1,6 @@
 import { Component, effect, inject, OnInit } from '@angular/core';
-import { Genre } from '../service/models/genre.model';
-import { TmdbService } from '../service/tmdb.service';
+import { Genre } from '../../../service/models/genre.model';
+import { TmdbService } from '../../../service/tmdb.service';
 
 @Component({
     selector: 'app-movie-selector',
