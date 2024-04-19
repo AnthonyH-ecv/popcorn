@@ -3,7 +3,7 @@ export interface MovieApiResponse {
     results: Movie[];
     total_pages: number;
     total_results: number;
-    genreId?: number;
+    genreId: number;
 }
 
 export interface Movie {
@@ -24,4 +24,4 @@ export interface Movie {
     vote_count: number;
 }
 
-export type MovieImageSize = 'original' | 'w-500' | 'w-200';
+export type MovieImageSize = 'original' | 'w500' | 'w200';

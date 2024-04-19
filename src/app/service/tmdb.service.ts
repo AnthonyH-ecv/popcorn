@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
 import { environment } from '../../environments/environment';
 import { GenresResponse } from './models/genre.model';
@@ -17,7 +17,8 @@ export class TmdbService {
         page: 0,
         results: [],
         total_pages: 0,
-        total_results: 0
+        total_results: 0,
+        genreId: 0
     });
     fetchTrendMovies = computed(() => this._fetchTrendMovies());
 
@@ -26,10 +27,19 @@ export class TmdbService {
     });
     fetchGenres = computed(() => this._fetchGenres());
 
+    private _fetchMovieByGenre: WritableSignal<MovieApiResponse> = signal({
+        page: 0,
+        results: [],
+        total_pages: 0,
+        total_results: 0,
+        genreId: 0
+    });
+    fetchMovieByGenre = computed(() => this._fetchMovieByGenre());
+
     getTrendMovies(): void {
         this.http.get<MovieApiResponse>(this.baseUrl + '/trending/movie/day', { headers: this.headers })
             .subscribe({
-                next: tmdbResponse => this._fetchTrendMovies.set(tmdbResponse),
+                next: movieResponse => this._fetchTrendMovies.set(movieResponse),
                 error: error => console.log(error),
             });
     }
@@ -42,8 +52,26 @@ export class TmdbService {
             });
     }
 
+    getMoviesByGenre(genreId: number): void {
+        let queryParam = new HttpParams();
+        queryParam = queryParam.set('language', 'en-US');
+        queryParam = queryParam.set('with_genres', genreId);
+
+        this.http.get<MovieApiResponse>(this.baseUrl + '/discover/movie', {
+            headers: this.headers,
+            params: queryParam
+        })
+            .subscribe({
+                next: movieByGenreResponse => {
+                    movieByGenreResponse.genreId = genreId;
+                    this._fetchMovieByGenre.set(movieByGenreResponse);
+                },
+                error: error => console.log(error),
+            });
+    }
+
     getImageUrl(id: string, size: MovieImageSize): string {
-        return `https://image.tmdb.org/t/p/${size}/${id}`;
+        return `https://image.tmdb.org/t/p/${size}${id}`;
     }
 
     constructor() {
