@@ -19,7 +19,7 @@ export class MovieDetailComponent implements OnInit, OnDestroy {
 
     constructor() {
         effect(() => {
-            const moviesResponse = this.tmdbService.fetchMovie();
+            const moviesResponse = this.tmdbService.movie();
             if (moviesResponse) {
                 this.movie = moviesResponse;
             }

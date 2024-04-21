@@ -15,7 +15,7 @@ export class TrendMovieComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            const trendMoviesResponse = this.tmdbService.fetchTrendMovies();
+            const trendMoviesResponse = this.tmdbService.trendMovies();
 
             if (trendMoviesResponse) {
                 this.trendMovie = trendMoviesResponse.results[0];

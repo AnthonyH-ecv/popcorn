@@ -21,7 +21,7 @@ export class SearchComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            const moviesResponse = this.tmdbService.fetchMovieBySearch();
+            const moviesResponse = this.tmdbService.moviesBySearch();
             if (moviesResponse) {
                 this.movies = moviesResponse.results;
             }

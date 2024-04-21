@@ -18,7 +18,7 @@ export class MovieSelectorComponent implements OnInit {
 
     constructor() {
         effect(() => {
-            const genresResponse = this.tmdbService.fetchGenres();
+            const genresResponse = this.tmdbService.genres();
             if (genresResponse) {
                 this.genres = genresResponse.genres;
             }

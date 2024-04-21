@@ -24,12 +24,12 @@ export class MovieListComponent implements OnInit {
     constructor() {
         effect(() => {
             if (this.movieListType === 'GENRE') {
-                const movieByGenreResponse = this.tmdbService.fetchMovieByGenre() ?? {} as MovieApiResponse;
+                const movieByGenreResponse = this.tmdbService.movieByGenre() ?? {} as MovieApiResponse;
                 if (movieByGenreResponse.genreId === this.genreId) {
                     this.moviesByGenre = movieByGenreResponse.results;
                 }
             } else if (this.movieListType === 'TREND') {
-                const trendMoviesResponse = this.tmdbService.fetchTrendMovies();
+                const trendMoviesResponse = this.tmdbService.trendMovies();
                 if (trendMoviesResponse) {
                     this.trendMovies = trendMoviesResponse.results;
                 }

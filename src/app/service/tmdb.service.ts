@@ -16,45 +16,45 @@ export class TmdbService {
     baseUrl: string = environment.TMDB_API_BASE_URL;
     headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.apiToken });
 
-    private _fetchTrendMovies: WritableSignal<MovieApiResponse> = signal({
+    private _trendMovies: WritableSignal<MovieApiResponse> = signal({
         page: 0,
         results: [],
         total_pages: 0,
         total_results: 0,
         genreId: 0
     });
-    fetchTrendMovies = computed(() => this._fetchTrendMovies());
+    trendMovies = computed(() => this._trendMovies());
 
-    private _fetchGenres: WritableSignal<GenresResponse> = signal({
+    private _genres: WritableSignal<GenresResponse> = signal({
         genres: [],
     });
-    fetchGenres = computed(() => this._fetchGenres());
+    genres = computed(() => this._genres());
 
-    private _fetchMovieByGenre: WritableSignal<MovieApiResponse> = signal({
+    private _movieByGenre: WritableSignal<MovieApiResponse> = signal({
         page: 0,
         results: [],
         total_pages: 0,
         total_results: 0,
         genreId: 0
     });
-    fetchMovieByGenre = computed(() => this._fetchMovieByGenre());
+    movieByGenre = computed(() => this._movieByGenre());
 
-    private _fetchMovie: WritableSignal<Movie> = signal(INITIAL_MOVIE);
-    fetchMovie = computed(() => this._fetchMovie());
+    private _movie: WritableSignal<Movie> = signal(INITIAL_MOVIE);
+    movie = computed(() => this._movie());
 
-    private _fetchMovieBySearch: WritableSignal<MovieApiResponse> = signal({
+    private _moviesBySearch: WritableSignal<MovieApiResponse> = signal({
         page: 0,
         results: [],
         total_pages: 0,
         total_results: 0,
         genreId: 0
     });
-    fetchMovieBySearch = computed(() => this._fetchMovieBySearch());
+    moviesBySearch = computed(() => this._moviesBySearch());
 
     getTrendMovies(): void {
         this.http.get<MovieApiResponse>(this.baseUrl + '/trending/movie/day', { headers: this.headers })
             .subscribe({
-                next: movieResponse => this._fetchTrendMovies.set(movieResponse),
+                next: movieResponse => this._trendMovies.set(movieResponse),
                 error: error => console.log(error),
             });
     }
@@ -62,7 +62,7 @@ export class TmdbService {
     getAllGenre(): void {
         this.http.get<GenresResponse>(this.baseUrl + '/genre/movie/list', { headers: this.headers })
             .subscribe({
-                next: genresResponse => this._fetchGenres.set(genresResponse),
+                next: genresResponse => this._genres.set(genresResponse),
                 error: error => console.log(error),
             });
     }
@@ -79,7 +79,7 @@ export class TmdbService {
             .subscribe({
                 next: movieByGenreResponse => {
                     movieByGenreResponse.genreId = genreId;
-                    this._fetchMovieByGenre.set(movieByGenreResponse);
+                    this._movieByGenre.set(movieByGenreResponse);
                 },
                 error: error => console.log(error),
             });
@@ -88,7 +88,7 @@ export class TmdbService {
     getMovieById(id: number): void {
         this.http.get<Movie>(this.baseUrl + `/movie/${id}`, { headers: this.headers })
             .subscribe({
-                next: movieResponse => this._fetchMovie.set(movieResponse),
+                next: movieResponse => this._movie.set(movieResponse),
                 error: error => console.log(error),
             });
     }
@@ -101,14 +101,14 @@ export class TmdbService {
         this.http.get<MovieApiResponse>(this.baseUrl + `/search/movie`, { headers: this.headers, params: queryParam })
             .subscribe({
                 next: movieApiResponse => {
-                    this._fetchMovieBySearch.set(movieApiResponse);
+                    this._moviesBySearch.set(movieApiResponse);
                 },
                 error: error => console.log(error),
             });
     }
 
     clearMovie() {
-        this._fetchMovie.set(INITIAL_MOVIE);
+        this._movie.set(INITIAL_MOVIE);
     }
 
     openMovieDetail(movieId: number): void {
