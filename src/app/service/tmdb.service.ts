@@ -1,14 +1,17 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../environments/environment';
+import { MovieDetailComponent } from '../home/components/movie-detail/movie-detail.component';
 import { GenresResponse } from './models/genre.model';
-import { MovieApiResponse, MovieImageSize } from './models/movie.model';
+import { INITIAL_MOVIE, Movie, MovieApiResponse, MovieImageSize } from './models/movie.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TmdbService {
     http: HttpClient = inject(HttpClient);
+    modalService: NgbModal = inject(NgbModal);
     apiToken: string = environment.TMDB_API_TOKEN;
     baseUrl: string = environment.TMDB_API_BASE_URL;
     headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.apiToken });
@@ -35,6 +38,9 @@ export class TmdbService {
         genreId: 0
     });
     fetchMovieByGenre = computed(() => this._fetchMovieByGenre());
+
+    private _fetchMovie: WritableSignal<Movie> = signal(INITIAL_MOVIE);
+    fetchMovie = computed(() => this._fetchMovie());
 
     getTrendMovies(): void {
         this.http.get<MovieApiResponse>(this.baseUrl + '/trending/movie/day', { headers: this.headers })
@@ -69,6 +75,23 @@ export class TmdbService {
                 error: error => console.log(error),
             });
     }
+
+    getMovieById(id: number): void {
+        this.http.get<Movie>(this.baseUrl + `/movie/${id}`, { headers: this.headers })
+            .subscribe({
+                next: movieResponse => this._fetchMovie.set(movieResponse),
+                error: error => console.log(error),
+            });
+    }
+
+    clearMovie() {
+        this._fetchMovie.set(INITIAL_MOVIE);
+    }
+
+    openMovieDetail(movieId: number): void {
+        let movieDetailModal = this.modalService.open(MovieDetailComponent);
+        movieDetailModal.componentInstance.movieId = movieId;
+    };
 
     getImageUrl(id: string, size: MovieImageSize): string {
         return `https://image.tmdb.org/t/p/${size}${id}`;

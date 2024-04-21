@@ -1,5 +1,7 @@
 @if (movie) {
-  <div class="me-2 movie" [style.background-image]="'url('+ tmdbService.getImageUrl(movie.poster_path!,'w200') +')'">
+  <div class="me-2 movie"
+       (click)="tmdbService.openMovieDetail(movie.id)"
+       [style.background-image]="'url('+ tmdbService.getImageUrl(movie.poster_path,'w200') +')'">
     <div class="placeholder-poster"></div>
   </div>
 }
