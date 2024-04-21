@@ -1,4 +1,11 @@
 .movie-card-wrapper {
+  .close {
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    cursor: pointer;
+  }
+
   .movie-card-img {
     height: 40vh;
     background-size: cover;

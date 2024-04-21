@@ -1,5 +1,6 @@
 @if (movie && movie.id) {
   <div class="movie-card-wrapper">
+    <i class="bi bi-x-circle close" (click)="close()"></i>
     <div class="movie-card-img"
          [style.background-image]="'url('+ tmdbService.getImageUrl(movie.poster_path,'w500') +')'"></div>
     <div class="movie-card-content">

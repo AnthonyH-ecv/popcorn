@@ -7,9 +7,10 @@
         {{ trendMovie.overview }}
       </div>
       <div class="d-flex mt-3">
-        <a class="btn btn-lg btn-dark bg-white me-3 d-flex align-items-center px-4 py-2 ">Play</a>
+        <a class="btn btn-lg btn-dark bg-white me-3 d-flex align-items-center px-4 py-2 "><i
+          class="bi bi-play-fill me-3"></i>Play</a>
         <a class="btn btn-lg btn-light me-3 d-flex align-items-center px-4 py-2 "
-           (click)="tmdbService.openMovieDetail(trendMovie.id)">More</a>
+           (click)="tmdbService.openMovieDetail(trendMovie.id)"><i class="bi bi-info-circle me-3"></i>More</a>
       </div>
     </div>
   </div>
