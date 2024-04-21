@@ -1,6 +1,6 @@
 @if (trendMovie) {
   <div class="main w-100 m-0 p-0 d-flex justify-content-start align-items-center"
-       [style.background-image]="'url('+ tmdbService.getImageUrl(trendMovie.poster_path, 'original') +')'">
+       [style.background-image]="'url('+ getImageUrl(trendMovie.poster_path, 'original') +')'">
     <div class="overview-container ms-5 d-flex flex-column justify-content-start align-items-start">
       <h1>{{ trendMovie.title }}</h1>
       <div class="fs-5 text-white overflow-scroll overview">
@@ -10,7 +10,7 @@
         <a class="btn btn-lg btn-dark bg-white me-3 d-flex align-items-center px-4 py-2 "><i
           class="bi bi-play-fill me-3"></i>Play</a>
         <a class="btn btn-lg btn-light me-3 d-flex align-items-center px-4 py-2 "
-           (click)="tmdbService.openMovieDetail(trendMovie.id)"><i class="bi bi-info-circle me-3"></i>More</a>
+           (click)="modalService.openMovieDetail(trendMovie.id)"><i class="bi bi-info-circle me-3"></i>More</a>
       </div>
     </div>
   </div>

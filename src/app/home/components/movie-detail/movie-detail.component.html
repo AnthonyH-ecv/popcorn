@@ -2,7 +2,7 @@
   <div class="movie-card-wrapper">
     <i class="bi bi-x-circle close" (click)="close()"></i>
     <div class="movie-card-img"
-         [style.background-image]="'url('+ tmdbService.getImageUrl(movie.poster_path,'w500') +')'"></div>
+         [style.background-image]="'url('+ getImageUrl(movie.poster_path,'w500') +')'"></div>
     <div class="movie-card-content">
       <div class="d-flex justify-content-between mb-3">
         <span class="badge bg-primary">Released: {{ movie.release_date | date:"longDate" }}</span>

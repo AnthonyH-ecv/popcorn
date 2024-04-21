@@ -1,17 +1,14 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { environment } from '../../environments/environment';
-import { MovieDetailComponent } from '../home/components/movie-detail/movie-detail.component';
 import { GenresResponse } from './models/genre.model';
-import { INITIAL_MOVIE, Movie, MovieApiResponse, MovieImageSize } from './models/movie.model';
+import { INITIAL_MOVIE, Movie, MovieApiResponse } from './models/movie.model';
 
 @Injectable({
     providedIn: 'root'
 })
 export class TmdbService {
     http: HttpClient = inject(HttpClient);
-    modalService: NgbModal = inject(NgbModal);
     apiToken: string = environment.TMDB_API_TOKEN;
     baseUrl: string = environment.TMDB_API_BASE_URL;
     headers = new HttpHeaders({ 'Authorization': 'Bearer ' + this.apiToken });
@@ -109,15 +106,6 @@ export class TmdbService {
 
     clearMovie() {
         this._movie.set(INITIAL_MOVIE);
-    }
-
-    openMovieDetail(movieId: number): void {
-        let movieDetailModal = this.modalService.open(MovieDetailComponent);
-        movieDetailModal.componentInstance.movieId = movieId;
-    };
-
-    getImageUrl(id: string, size: MovieImageSize): string {
-        return `https://image.tmdb.org/t/p/${size}${id}`;
     }
 
     constructor() {

@@ -1,6 +1,7 @@
 import { Component, inject, Input } from '@angular/core';
+import { ModalService } from '../../../service/modal.service';
 import { Movie } from '../../../service/models/movie.model';
-import { TmdbService } from '../../../service/tmdb.service';
+import { getImageUrl } from '../../../utils';
 
 @Component({
     selector: 'app-movie-card',
@@ -11,5 +12,6 @@ import { TmdbService } from '../../../service/tmdb.service';
 })
 export class MovieCardComponent {
     @Input() movie: Movie | undefined;
-    tmdbService = inject(TmdbService);
+    modalService = inject(ModalService);
+    protected readonly getImageUrl = getImageUrl;
 }

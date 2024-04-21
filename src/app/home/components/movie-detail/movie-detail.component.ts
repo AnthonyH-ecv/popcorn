@@ -3,6 +3,7 @@ import { Component, effect, inject, OnDestroy, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Movie } from '../../../service/models/movie.model';
 import { TmdbService } from '../../../service/tmdb.service';
+import { getImageUrl } from '../../../utils';
 
 @Component({
     selector: 'app-movie',
@@ -40,4 +41,5 @@ export class MovieDetailComponent implements OnInit, OnDestroy {
         this.activeModal.close();
     }
 
+    protected readonly getImageUrl = getImageUrl;
 }
