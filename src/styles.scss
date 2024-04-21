@@ -4,4 +4,19 @@
 @import "assets/styles/variables";
 @import 'bootstrap/scss/bootstrap';
 @import 'assets/styles/bootswatch';
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css");
+
+
+.modal {
+  height: 100vh;
+  overflow: hidden;
+
+  .modal-dialog {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+  }
+}
+
+
 
