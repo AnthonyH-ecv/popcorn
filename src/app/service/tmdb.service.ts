@@ -42,6 +42,15 @@ export class TmdbService {
     private _fetchMovie: WritableSignal<Movie> = signal(INITIAL_MOVIE);
     fetchMovie = computed(() => this._fetchMovie());
 
+    private _fetchMovieBySearch: WritableSignal<MovieApiResponse> = signal({
+        page: 0,
+        results: [],
+        total_pages: 0,
+        total_results: 0,
+        genreId: 0
+    });
+    fetchMovieBySearch = computed(() => this._fetchMovieBySearch());
+
     getTrendMovies(): void {
         this.http.get<MovieApiResponse>(this.baseUrl + '/trending/movie/day', { headers: this.headers })
             .subscribe({
@@ -80,6 +89,20 @@ export class TmdbService {
         this.http.get<Movie>(this.baseUrl + `/movie/${id}`, { headers: this.headers })
             .subscribe({
                 next: movieResponse => this._fetchMovie.set(movieResponse),
+                error: error => console.log(error),
+            });
+    }
+
+    searchByTerm(term: string): void {
+        let queryParam = new HttpParams();
+        queryParam = queryParam.set('language', 'en-US');
+        queryParam = queryParam.set('query', term);
+
+        this.http.get<MovieApiResponse>(this.baseUrl + `/search/movie`, { headers: this.headers, params: queryParam })
+            .subscribe({
+                next: movieApiResponse => {
+                    this._fetchMovieBySearch.set(movieApiResponse);
+                },
                 error: error => console.log(error),
             });
     }
