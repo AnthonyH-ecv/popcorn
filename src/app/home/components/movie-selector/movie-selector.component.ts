@@ -21,6 +21,7 @@ export class MovieSelectorComponent implements OnInit {
             const genresResponse = this.tmdbService.genres();
             if (genresResponse) {
                 this.genres = genresResponse.genres;
+                this.tmdbService.getAllMoviesListByGenre(this.genres);
             }
         });
     }

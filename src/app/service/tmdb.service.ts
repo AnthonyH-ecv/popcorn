@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { computed, inject, Injectable, signal, WritableSignal } from '@angular/core';
+import { forkJoin, map, Observable } from 'rxjs';
 import { environment } from '../../environments/environment';
-import { GenresResponse } from './models/genre.model';
+import { Genre, GenresResponse } from './models/genre.model';
 import { INITIAL_MOVIE, Movie, MovieApiResponse } from './models/movie.model';
 
 @Injectable({
@@ -27,14 +28,8 @@ export class TmdbService {
     });
     genres = computed(() => this._genres());
 
-    private _movieByGenre: WritableSignal<MovieApiResponse> = signal({
-        page: 0,
-        results: [],
-        total_pages: 0,
-        total_results: 0,
-        genreId: 0
-    });
-    movieByGenre = computed(() => this._movieByGenre());
+    private _allMoviesListByGenre: WritableSignal<{ genreId: number, moviesResponse: MovieApiResponse }[]> = signal([]);
+    allMoviesListByGenre = computed(() => this._allMoviesListByGenre());
 
     private _movie: WritableSignal<Movie> = signal(INITIAL_MOVIE);
     movie = computed(() => this._movie());
@@ -64,20 +59,24 @@ export class TmdbService {
             });
     }
 
-    getMoviesByGenre(genreId: number): void {
-        let queryParam = new HttpParams();
-        queryParam = queryParam.set('language', 'en-US');
-        queryParam = queryParam.set('with_genres', genreId);
+    getMoviesByGenre(genreId: number): Observable<{ genreId: number, moviesResponse: MovieApiResponse }> {
+        let queryParam = new HttpParams()
+            .set('language', 'en-US')
+            .set('with_genres', genreId.toString());
 
-        this.http.get<MovieApiResponse>(this.baseUrl + '/discover/movie', {
+        return this.http.get<MovieApiResponse>(`${this.baseUrl}/discover/movie`, {
             headers: this.headers,
             params: queryParam
-        })
+        }).pipe(
+            map(moviesResponse => ({ genreId, moviesResponse }))
+        );
+    }
+
+    getAllMoviesListByGenre(genres: Genre[] | undefined): void {
+        const requests = genres?.map(({ id }) => this.getMoviesByGenre(id));
+        forkJoin(requests!)
             .subscribe({
-                next: movieByGenreResponse => {
-                    movieByGenreResponse.genreId = genreId;
-                    this._movieByGenre.set(movieByGenreResponse);
-                },
+                next: movieResponse => this._allMoviesListByGenre.set(movieResponse),
                 error: error => console.log(error),
             });
     }

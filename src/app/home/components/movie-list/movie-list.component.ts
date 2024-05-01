@@ -24,9 +24,10 @@ export class MovieListComponent implements OnInit {
     constructor() {
         effect(() => {
             if (this.movieListType === 'GENRE') {
-                const movieByGenreResponse = this.tmdbService.movieByGenre() ?? {} as MovieApiResponse;
-                if (movieByGenreResponse.genreId === this.genreId) {
-                    this.moviesByGenre = movieByGenreResponse.results;
+                const allMoviesListByGenreResponse = this.tmdbService.allMoviesListByGenre() ?? {} as MovieApiResponse;
+                if (allMoviesListByGenreResponse) {
+                    const moviesByGenre = allMoviesListByGenreResponse.find(list => list.genreId === this.genreId);
+                    this.moviesByGenre = moviesByGenre ? moviesByGenre.moviesResponse.results : [];
                 }
             } else if (this.movieListType === 'TREND') {
                 const trendMoviesResponse = this.tmdbService.trendMovies();
