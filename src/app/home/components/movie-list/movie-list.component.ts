@@ -21,8 +21,7 @@ export class MovieListComponent implements OnInit, AfterViewInit {
     private _scrollPosition: number = 0;
     canScrollLeft: boolean = false;
     tmdbService = inject(TmdbService);
-    moviesByGenre: Movie[] | undefined;
-    trendMovies: Movie[] | undefined;
+    movies: Movie[] | undefined;
 
     constructor() {
         effect(() => {
@@ -30,12 +29,12 @@ export class MovieListComponent implements OnInit, AfterViewInit {
                 const allMoviesListByGenreResponse = this.tmdbService.allMoviesListByGenre() ?? {} as MovieApiResponse;
                 if (allMoviesListByGenreResponse) {
                     const moviesByGenre = allMoviesListByGenreResponse.find(list => list.genreId === this.genreId);
-                    this.moviesByGenre = moviesByGenre ? moviesByGenre.moviesResponse.results : [];
+                    this.movies = moviesByGenre ? moviesByGenre.moviesResponse.results : [];
                 }
             } else if (this.movieListType === 'TREND') {
                 const trendMoviesResponse = this.tmdbService.trendMovies();
                 if (trendMoviesResponse) {
-                    this.trendMovies = trendMoviesResponse.results;
+                    this.movies = trendMoviesResponse.results;
                 }
             }
         });
