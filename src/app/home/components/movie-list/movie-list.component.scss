@@ -18,7 +18,7 @@
 .scroll-btn {
   position: absolute;
   top: 50%;
-  width: 70px;
+  width: 55px;
   height: 100%;
   transform: translateY(-50%);
   background-color: rgba(0, 0, 0, 0.5);
@@ -34,5 +34,9 @@
 
   &.right {
     right: 0;
+  }
+
+  .arrow-icon {
+    font-size: 24px;
   }
 }

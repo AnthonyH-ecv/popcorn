@@ -1,14 +1,18 @@
 @if (movies) {
   <div class="movies-list-wrapper">
     @if (canScrollLeft) {
-      <button class="scroll-btn left" (click)="scrollLeft()">&#8678;</button>
+      <button class="scroll-btn left" (click)="scrollLeft()">
+        <i class="bi bi-chevron-left arrow-icon"></i>
+      </button>
     }
     <div class=" d-flex align-items-center ms-5 movies-list-content" (scroll)="onScroll()" #scrollContainer>
       @for (movie of movies; track movie.id) {
         <app-movie-card [movie]="movie" />
       }
     </div>
-    <button class="scroll-btn right" (click)="scrollRight()">&#8680;</button>
+    <button class="scroll-btn right" (click)="scrollRight()">
+      <i class="bi bi-chevron-right arrow-icon"></i>
+    </button>
   </div>
 }
 

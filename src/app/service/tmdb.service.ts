@@ -106,7 +106,4 @@ export class TmdbService {
     clearMovie() {
         this._movie.set(INITIAL_MOVIE);
     }
-
-    constructor() {
-    }
 }
