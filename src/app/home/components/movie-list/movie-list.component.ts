@@ -1,4 +1,4 @@
-import { Component, effect, inject, Input, OnInit } from '@angular/core';
+import { AfterViewInit, Component, effect, ElementRef, inject, Input, OnInit, ViewChild } from '@angular/core';
 import { Movie, MovieApiResponse } from '../../../service/models/movie.model';
 import { TmdbService } from '../../../service/tmdb.service';
 import { MovieCardComponent } from '../movie-card/movie-card.component';
@@ -14,9 +14,12 @@ export type MovieListType = 'GENRE' | 'TREND';
     templateUrl: './movie-list.component.html',
     styleUrl: './movie-list.component.scss'
 })
-export class MovieListComponent implements OnInit {
+export class MovieListComponent implements OnInit, AfterViewInit {
     @Input() genreId: number = -1;
     @Input() movieListType: MovieListType = 'GENRE';
+    @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef<HTMLDivElement>;
+    private _scrollPosition: number = 0;
+    canScrollLeft: boolean = false;
     tmdbService = inject(TmdbService);
     moviesByGenre: Movie[] | undefined;
     trendMovies: Movie[] | undefined;
@@ -40,5 +43,31 @@ export class MovieListComponent implements OnInit {
 
     ngOnInit() {
         this.tmdbService.getMoviesByGenre(this.genreId);
+    }
+
+    ngAfterViewInit(): void {
+        if (this.scrollContainer !== undefined) {
+            this.checkScroll();
+        }
+    }
+
+    onScroll(): void {
+        const scrollPosition = this.scrollContainer.nativeElement.scrollLeft;
+        this.canScrollLeft = scrollPosition > 0;
+    }
+
+    scrollLeft(): void {
+        this.scrollContainer.nativeElement.scrollBy({ left: -300, behavior: 'smooth' });
+        this.checkScroll();
+    }
+
+    scrollRight(): void {
+        this.scrollContainer.nativeElement.scrollBy({ left: 300, behavior: 'smooth' });
+        this.checkScroll();
+    }
+
+    checkScroll(): void {
+        const container = this.scrollContainer.nativeElement;
+        this.canScrollLeft = container.scrollLeft > 0;
     }
 }
